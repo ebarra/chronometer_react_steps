@@ -56,29 +56,34 @@ export default class App extends React.Component {
           minutes: minutes
         });
     }
-  render() {
-    let run = this.state.running === true;
-    return (
-      <div className="app">
-        <div className="display">
-          <div className="state">{run ? 'Status: Running' : 'Status: Stopped'}</div>
-          <div className="numbers">
-            <span className="mins">{this.state.minutes}:</span>
-            <span className="secs">{this.state.seconds} </span>
-            <span className="millis">.0{this.state.millis}</span>
-          </div>
-        </div>
+    zeroPad(value) {
+          return value < 10 ? `0${value}` : value;
+    }  
+    render() {
+          let run = this.state.running === true;
+          let stopDisabled = false === run;
+          let resetDisabled = (true === run || (false === run && (this.state.millis > 0 || this.state.seconds > 0 || this.state.minutes > 0 )));
+          return (
+              <div className="app">
+                      <div className="display">
+                          <div className="state">{run ? 'Status: Running' : 'Status: Stopped'}</div>
+                          <div className="numbers">
+                              <span className="mins">{this.zeroPad(this.state.minutes)}:</span>
+                              <span className="secs">{this.zeroPad(this.state.seconds)} </span>
+                              <span className="millis">.0{this.state.millis}</span>
+                          </div>
+                      </div>
 
-        <div className="actions">
-          <button className="btn start "
-              onClick={this._handleStartClick}>Start</button>
+                      <div className="actions">
+                          <button className={"btn start " + (run ? 'disabled' : '')}
+                              onClick={this._handleStartClick}>Start</button>
 
-          <button className="btn stop "
-              onClick={this._handleStopClick}>Stop</button>
+                          <button className={"btn stop " + ( stopDisabled ? 'disabled' : '')}
+                              onClick={this._handleStopClick}>Stop</button>
 
-          <button className="btn reset "
-              onClick={this._handleResetClick}>Reset</button>
-          </div>
-        </div>);
+                          <button className={"btn reset " + ( resetDisabled ? '' : 'disabled')}
+                              onClick={this._handleResetClick}>Reset</button>
+                      </div>
+              </div>);
+      }
   }
-}
