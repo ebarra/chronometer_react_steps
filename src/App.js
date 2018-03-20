@@ -12,6 +12,7 @@ export default class App extends React.Component {
         };
         this._handleStartClick = this._handleStartClick.bind(this);
         this._handleStopClick = this._handleStopClick.bind(this);
+        this._handleResetClick = this._handleResetClick.bind(this);
   }
   _handleStartClick(event) {
         if (!this.state.running) {
@@ -27,6 +28,14 @@ export default class App extends React.Component {
             this.setState({running: false});
         }
     }
+  _handleResetClick(event) {
+      this._handleStopClick();
+      this.setState({
+        millis: 0,
+        seconds: 0,
+        minutes: 0
+      });
+  }
   tick() {
         let millis = this.state.millis + 1;
         let seconds = this.state.seconds;
@@ -68,7 +77,7 @@ export default class App extends React.Component {
               onClick={this._handleStopClick}>Stop</button>
 
           <button className="btn reset "
-              onClick={()=>console.log("reset")}>Reset</button>
+              onClick={this._handleResetClick}>Reset</button>
           </div>
         </div>);
   }
